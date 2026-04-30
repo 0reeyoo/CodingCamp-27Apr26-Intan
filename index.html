@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pelacak Pengeluaran</title>
+  <link rel="stylesheet" href=".kiro/css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">?? Pelacak Pengeluaran</div>
+      <button id="themeToggle" class="theme-toggle" type="button">??</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="total-card">
+      <h2>Total Pengeluaran</h2>
+      <div id="totalAmount" class="total-amount">Rp 0</div>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="dashboard" type="button">Dashboard</button>
+      <button class="tab-btn" data-tab="add" type="button">Tambah</button>
+      <button class="tab-btn" data-tab="summary" type="button">Ringkasan</button>
+      <button class="tab-btn" data-tab="settings" type="button">Pengaturan</button>
+    </nav>
+
+    <section id="dashboard" class="tab-content active">
+      <div class="monthly-summary-card">
+        <h3>Ringkasan Bulan Ini</h3>
+        <div id="monthlySummaryCard" class="monthly-summary-content"></div>
+      </div>
+
+      <div class="chart-section">
+        <h3>Distribusi Kategori</h3>
+        <canvas id="categoryChart" width="300" height="300"></canvas>
+      </div>
+
+      <div class="filters">
+        <div class="filter-group">
+          <label for="sortBy">Urutkan</label>
+          <select id="sortBy">
+            <option value="date-desc">Tanggal Terbaru</option>
+            <option value="date-asc">Tanggal Terlama</option>
+            <option value="amount-desc">Jumlah Terbesar</option>
+            <option value="amount-asc">Jumlah Terkecil</option>
+            <option value="category">Kategori</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="categoryFilter">Kategori</label>
+          <select id="categoryFilter">
+            <option value="">Semua Kategori</option>
+            <option value="makanan">Makanan</option>
+            <option value="transportasi">Transportasi</option>
+            <option value="hiburan">Hiburan</option>
+            <option value="kesehatan">Kesehatan</option>
+            <option value="lainnya">Lainnya</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="expenseList" class="expense-list"></div>
+    </section>
+
+    <section id="add" class="tab-content">
+      <form id="expenseForm" class="expense-form">
+        <div class="form-group">
+          <label for="description">Deskripsi Pengeluaran</label>
+          <input type="text" id="description" placeholder="Contoh: Beli Kopi" required />
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Jumlah</label>
+          <input type="number" id="amount" placeholder="Contoh: 50000" required />
+        </div>
+
+        <div class="form-group">
+          <label for="category">Kategori</label>
+          <select id="category" required>
+            <option value="">Pilih Kategori</option>
+            <option value="makanan">Makanan</option>
+            <option value="transportasi">Transportasi</option>
+            <option value="hiburan">Hiburan</option>
+            <option value="kesehatan">Kesehatan</option>
+            <option value="lainnya">Lainnya</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Tanggal</label>
+          <input type="date" id="date" required />
+        </div>
+
+        <button type="submit" class="btn-primary">Tambah Pengeluaran</button>
+      </form>
+    </section>
+
+    <section id="summary" class="tab-content">
+      <div class="summary-container">
+        <div class="summary-card">
+          <h3>Total Pengeluaran (Bulan Ini)</h3>
+          <div id="monthlyTotal" class="summary-value">Rp 0</div>
+        </div>
+
+        <div class="summary-card">
+          <h3>Total Pengeluaran (Tahun Ini)</h3>
+          <div id="yearlyTotal" class="summary-value">Rp 0</div>
+        </div>
+
+        <div class="summary-card">
+          <h3>Total Pengeluaran (Keseluruhan)</h3>
+          <div id="overallTotal" class="summary-value">Rp 0</div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h3>Pengeluaran Berdasarkan Kategori</h3>
+        <canvas id="categoryChartSummary" width="300" height="300"></canvas>
+      </div>
+
+      <div class="chart-section">
+        <h3>Tren Pengeluaran Bulanan</h3>
+        <canvas id="monthlyTrendChart" width="300" height="150"></canvas>
+      </div>
+    </section>
+
+    <section id="settings" class="tab-content">
+      <div class="settings-group">
+        <h3>Pengaturan Umum</h3>
+        <div class="setting-item">
+          <label for="currency">Mata Uang</label>
+          <select id="currency">
+            <option value="IDR">IDR (Rp)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <label for="decimalPlaces">Desimal</label>
+          <select id="decimalPlaces">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3>Data</h3>
+        <button type="button" id="exportBtn" class="btn-secondary">Export Data</button>
+        <button type="button" id="importBtn" class="btn-secondary">Import Data</button>
+        <input type="file" id="importFile" accept=".json" style="display: none" />
+        <button type="button" id="clearBtn" class="btn-danger">Hapus Semua Data</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2024 Pelacak Pengeluaran. Semua hak dilindungi.</p>
+  </footer>
+
+  <script src=".kiro/js/app.js"></script>
+</body>
+</html>
